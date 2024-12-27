@@ -8,6 +8,15 @@ import {
     push,
     revert,
 } from './controllers/gitCommands.controllers.js';
+import dotenv from 'dotenv';
+import { app } from './app.js';
+import { connectDB } from './config/index.js';
+import http from 'http';
+import { Server } from 'socket.io';
+
+dotenv.config({
+    path: './.env',
+});
 
 yargs(hideBin(process.argv))
     .command('start', 'start a new server', {}, startServer)
@@ -59,4 +68,35 @@ yargs(hideBin(process.argv))
     .demandCommand(1, 'You need at least one command before moving on')
     .help().argv;
 
-const startServer = () => {};
+const PORT = process.env.PORT || 8000;
+function startServer() {
+    connectDB()
+        .then(() => {
+            const httpServer = http.createServer(app);
+            const io = new Server(httpServer, {
+                cors: {
+                    origin: process.env.CORS_ORIGIN,
+                    methods: ['GET', 'POST'],
+                },
+            });
+
+            let user;
+            io.on('connection', (socket) => {
+                socket.on('JoinRoom', (userId) => {
+                    user = userId;
+                    console.log(`==========`);
+                    console.log(user);
+                    console.log(`==========`);
+                    socket.join(userId);
+                });
+            });
+
+            httpServer.listen(PORT, () => {
+                console.log(`Server is listening at port: ${PORT}`);
+            });
+        })
+        .catch((error) => {
+            console.log('MongoDB connection Error: ', error);
+            process.exit(1);
+        });
+}
