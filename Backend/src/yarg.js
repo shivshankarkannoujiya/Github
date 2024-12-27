@@ -38,7 +38,9 @@ yargs(hideBin(process.argv))
                 describe: 'Commit message',
             });
         },
-        commit
+        (argv) => {
+            commit(argv.message);
+        }
     )
     .command('push', 'push commits to remote repository/s3', {}, push)
     .command('pull', 'pull commits from remote repository/s3', {}, pull)
