@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-
 const initRepo = async () => {
     const repoPath = path.resolve(process.cwd(), '.abhiGit');
     const commitsPath = path.join(repoPath, 'commits');
@@ -15,17 +14,28 @@ const initRepo = async () => {
             JSON.stringify({
                 bucket: 'process.env.S3_BUCKET', // TODO: Make changes here
             })
-        )
+        );
         console.log('Repository initialized successfully!');
     } catch (error) {
         console.log('Error intializing repository:', error);
     }
 };
 
+const addFile = async (filePath) => {
+    const repoPath = path.resolve(process.cwd(), '.abhiGit');
+    const stagingPath = path.join(repoPath, 'staging');
 
-const addFile = async () => {
-    console.log('add command called');
+    try {
+        await fs.mkdir(stagingPath, { recursive: true });
+        const fileName = path.basename(filePath);
+        await fs.copyFile(filePath, path.join(stagingPath, fileName));
+
+        console.log(`File ${fileName} added to staging area!`);
+    } catch (error) {
+        console.log('Error adding file:', error);
+    }
 };
+
 
 const commit = async () => {
     console.log('commit command called');

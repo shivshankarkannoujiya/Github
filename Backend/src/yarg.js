@@ -25,7 +25,9 @@ yargs(hideBin(process.argv))
                 describe: 'file to add to staging area',
             });
         },
-        addFile
+        (argv) => {
+            addFile(argv.file);
+        }
     )
     .command(
         'commit <message>',
