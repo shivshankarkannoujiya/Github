@@ -96,7 +96,7 @@ function startServer() {
             });
         })
         .catch((error) => {
-            console.log('MongoDB connection Error: ', error);
+            console.error('MongoDB connection Error: ', error);
             process.exit(1);
         });
 }
