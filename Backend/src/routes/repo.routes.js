@@ -17,8 +17,8 @@ router.route('/getAllRepo').put(getAllRepository);
 router.route('/fetchRepo/:id').get(fetchRepositoryByID);
 router.route('/fetchRepo/:name').get(fetchRepositoryByName);
 router.route('/fetchRepo/:userId').get(fetchRepositoryForCurrentUser);
-router.route('/repo/update').put(updateRepositoryByID);
-router.route('/repo/toggle').patch(toggleVisibilityByID);
+router.route('/update').put(updateRepositoryByID);
+router.route('/toggle').patch(toggleVisibilityByID);
 router.route('/createRepo').delete(deleteRepositoryByID);
 
 export default router;

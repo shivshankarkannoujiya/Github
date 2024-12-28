@@ -8,3 +8,14 @@ const fetchRepositoryForCurrentUser = async (req, res) => {};
 const updateRepositoryByID = async (req, res) => {};
 const toggleVisibilityByID = async (req, res) => {};
 const deleteRepositoryByID = async (req, res) => {};
+
+export {
+    createRepository,
+    getAllRepository,
+    fetchRepositoryByID,
+    fetchRepositoryByName,
+    fetchRepositoryForCurrentUser,
+    updateRepositoryByID,
+    toggleVisibilityByID,
+    deleteRepositoryByID,
+};
