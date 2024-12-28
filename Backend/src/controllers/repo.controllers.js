@@ -42,10 +42,29 @@ const createRepository = async (req, res) => {
     }
 };
 
-const getAllRepository = async (req, res) => {
-    
-};
+const getAllRepository = async (_, res) => {
+    try {
+        const repositories = await Repository.find({})
+            .populate('owner')
+            .populate('issues');
+        if (repositories.length === 0) {
+            return res.status(404).json({
+                message: 'No repository found',
+            });
+        }
 
+        return res.status(200).json({
+            repositories: repositories,
+            message: 'Repositories fetched successfully',
+        });
+    } catch (error) {
+        console.error('Error fetching repos');
+        return res.status(500).json({
+            message: 'An error cooured while fetching repos',
+            error: error.message,
+        });
+    }
+};
 
 const fetchRepositoryByID = async (req, res) => {};
 const fetchRepositoryByName = async (req, res) => {};
