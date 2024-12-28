@@ -1,7 +1,10 @@
 import { User } from '../models/user.models.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { signupBodySchema } from '../validator/user.validator.js';
+import {
+    loginBodySchema,
+    signupBodySchema,
+} from '../validator/user.validator.js';
 
 const signupUser = async (req, res) => {
     try {
@@ -56,7 +59,6 @@ const signupUser = async (req, res) => {
             token: token,
             message: 'User created successfully!!',
         });
-
     } catch (error) {
         console.error('Error while registering User: ', error);
         return res.status(500).json({
@@ -65,7 +67,56 @@ const signupUser = async (req, res) => {
     }
 };
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+    try {
+        const { success, data } = loginBodySchema.safeParse(req.body);
+        if (!success) {
+            return res.status(411).json({
+                message: 'Invalid Inputs !!',
+            });
+        }
+
+        const { email, password } = data;
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({
+                message: 'User does not registered',
+            });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({
+                message: 'Invalid Credentials',
+            });
+        }
+
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRY,
+        });
+
+        const loggedInUser = await User.findById({ _id: user._id }).select(
+            '-password'
+        );
+        if (!loggedInUser) {
+            return res.status(404).json({
+                message: 'LoggedIn user not found !',
+            });
+        }
+
+        const options = {
+            httpOnly: true,
+            secure: true,
+        };
+
+        return res.status(200).cookie('token', token, options).json({
+            user: loggedInUser,
+            token: token,
+            message: 'User logged In Successfully',
+        });
+    } catch (error) {}
+};
+
 const getAllUsers = async (req, res) => {};
 
 const getUserProfile = async (req, res) => {};
