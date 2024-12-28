@@ -124,7 +124,7 @@ const loginUser = async (req, res) => {
 
 const getAllUsers = async (_, res) => {
     try {
-        const users = await User.find({})
+        const users = await User.find({});
         if (users.length === 0) {
             return res.status(404).json({
                 message: 'No User found',
@@ -132,20 +132,45 @@ const getAllUsers = async (_, res) => {
         }
 
         return res.status(200).json({
-            user: user,
+            user: users,
             message: 'User fetched successfully',
         });
     } catch (error) {
         console.error('Error while fetching Users: ', error);
-        return res
-            .status(500)
-            .json({
-            message: error.message,
+        return res.status(500).json({
+            message: 'An Error occured while fetching users',
+            error: error.message,
         });
     }
 };
 
-const getUserProfile = async (req, res) => {};
+const getUserProfile = async (req, res) => {
+    const  userId  = req.params.id;
+
+    console.log("userID: ", userId)
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+
+        return res
+            .status(200)
+            .json({
+                user: user,
+                message: "User profile fetched successfully"
+            })
+    } catch (error) {
+        console.log('Error while fetching User profile by id: ', error);
+        return res.status(500).json({
+            message: 'Error during fetching User profile by ID',
+            error: error.message,
+        });
+    }
+};
+
 const updateUserProfile = async (req, res) => {};
 const deleteUserProfile = async (req, res) => {};
 
