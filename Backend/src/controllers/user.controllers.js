@@ -145,9 +145,9 @@ const getAllUsers = async (_, res) => {
 };
 
 const getUserProfile = async (req, res) => {
-    const  userId  = req.params.id;
+    const userId = req.params.id;
 
-    console.log("userID: ", userId)
+    console.log('userID: ', userId);
     try {
         const user = await User.findById(userId);
         if (!user) {
@@ -156,12 +156,10 @@ const getUserProfile = async (req, res) => {
             });
         }
 
-        return res
-            .status(200)
-            .json({
-                user: user,
-                message: "User profile fetched successfully"
-            })
+        return res.status(200).json({
+            user: user,
+            message: 'User profile fetched successfully',
+        });
     } catch (error) {
         console.log('Error while fetching User profile by id: ', error);
         return res.status(500).json({
@@ -171,8 +169,67 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-const updateUserProfile = async (req, res) => {};
-const deleteUserProfile = async (req, res) => {};
+const updateUserProfile = async (req, res) => {
+    const userId = req.params.id;
+    const { email, password } = req.body;
+
+    try {
+        const updateFields = { email };
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            updateFields.password = hashedPassword;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                $set: updateFields,
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+
+        return res.status(200).json({
+            user: updatedUser,
+            message: 'User profile updated successfully',
+        });
+    } catch (error) {
+        console.error('Error updating profile: ', error);
+        return res.status(500).json({
+            message: 'Error occured while updating user profile',
+            error: error.message,
+        });
+    }
+};
+
+const deleteUserProfile = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId);
+        if (!deletedUser) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+
+        return res.status(204).json({
+            deletedUser: deletedUser,
+            message: `User profile deleted successfully`,
+        });
+    } catch (error) {
+        console.error('Error deleting User: ', error);
+        return res.status(500).json({
+            message: 'An error occured while deleting User',
+            error: error.message,
+        });
+    }
+};
 
 export {
     signupUser,
