@@ -114,11 +114,36 @@ const loginUser = async (req, res) => {
             token: token,
             message: 'User logged In Successfully',
         });
-    } catch (error) {}
+    } catch (error) {
+        console.error('Error while logged In User: ', error);
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
 };
 
+const getAllUsers = async (_, res) => {
+    try {
+        const users = await User.find({})
+        if (users.length === 0) {
+            return res.status(404).json({
+                message: 'No User found',
+            });
+        }
 
-const getAllUsers = async (req, res) => {};
+        return res.status(200).json({
+            user: user,
+            message: 'User fetched successfully',
+        });
+    } catch (error) {
+        console.error('Error while fetching Users: ', error);
+        return res
+            .status(500)
+            .json({
+            message: error.message,
+        });
+    }
+};
 
 const getUserProfile = async (req, res) => {};
 const updateUserProfile = async (req, res) => {};
