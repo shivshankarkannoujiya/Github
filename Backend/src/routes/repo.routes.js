@@ -13,10 +13,10 @@ import {
 const router = Router();
 
 router.route('/createRepo').post(createRepository);
-router.route('/getAllRepo').put(getAllRepository);
+router.route('/getAllRepo').get(getAllRepository);
 router.route('/fetchRepo/:id').get(fetchRepositoryByID);
-router.route('/fetchRepo/:name').get(fetchRepositoryByName);
-router.route('/fetchRepo/:userId').get(fetchRepositoryForCurrentUser);
+router.route('/fetchRepo/name/:name').get(fetchRepositoryByName);
+router.route('/fetchRepo/user/:userId').get(fetchRepositoryForCurrentUser);
 router.route('/update').put(updateRepositoryByID);
 router.route('/toggle').patch(toggleVisibilityByID);
 router.route('/createRepo').delete(deleteRepositoryByID);

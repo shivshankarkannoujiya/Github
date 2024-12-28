@@ -29,6 +29,7 @@ const createRepository = async (req, res) => {
             issues,
         });
 
+        // TODO: update the User and Issue
         return res.status(201).json({
             createdRepo: newRepository,
             message: 'Repository created successfully',
@@ -66,8 +67,61 @@ const getAllRepository = async (_, res) => {
     }
 };
 
-const fetchRepositoryByID = async (req, res) => {};
-const fetchRepositoryByName = async (req, res) => {};
+const fetchRepositoryByID = async (req, res) => {
+    const { repo_Id } = req.params.id;
+
+    try {
+        const repository = await Repository.find({ _id: repo_Id })
+            .populate('owner')
+            .populate('issues');
+
+        if (!repository) {
+            return res.status(404).json({
+                message: 'repository not found',
+            });
+        }
+
+        return res.status(200).json({
+            repository: repository,
+            message: 'Repository fetched successfully',
+        });
+    } catch (error) {
+        console.error('Error fetching repository by id: ', error);
+        return res.status(500).json({
+            message: 'An error occured while fetching repository by id',
+            error: error.message,
+        });
+    }
+};
+
+const fetchRepositoryByName = async (req, res) => {
+    const { repo_Name } = req.params.name;
+
+    try {
+        const repository = await Repository.find({ name: repo_Name })
+            .populate('owner')
+            .populate('issues');
+
+        if (!repository) {
+            return res.status(404).json({
+                message: 'repository not found',
+            });
+        }
+
+        return res.status(200).json({
+            repository: repository,
+            message: 'Repository fetched successfully',
+        });
+    } catch (error) {
+        console.error('Error fetching repository by name: ', error);
+        return res.status(500).json({
+            message: 'An error occured while fetching repository by name',
+            error: error.message,
+        });
+    }
+};
+
+
 const fetchRepositoryForCurrentUser = async (req, res) => {};
 const updateRepositoryByID = async (req, res) => {};
 const toggleVisibilityByID = async (req, res) => {};
