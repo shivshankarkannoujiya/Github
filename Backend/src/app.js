@@ -16,6 +16,9 @@ app.use(cookieParser());
 
 //TODO: import routes
 import userRouter from './routes/user.routes.js';
+import repoRouter from './routes/repo.routes.js';
+
 app.use('/api/v1', userRouter);
+app.use('/api/v1', repoRouter);
 
 export { app };
