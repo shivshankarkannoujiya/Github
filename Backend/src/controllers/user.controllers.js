@@ -117,6 +117,7 @@ const loginUser = async (req, res) => {
     } catch (error) {}
 };
 
+
 const getAllUsers = async (req, res) => {};
 
 const getUserProfile = async (req, res) => {};
