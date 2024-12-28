@@ -68,10 +68,10 @@ const getAllRepository = async (_, res) => {
 };
 
 const fetchRepositoryByID = async (req, res) => {
-    const { repo_Id } = req.params.id;
+    const repo_Id  = req.params.id;
 
     try {
-        const repository = await Repository.find({ _id: repo_Id })
+        const repository = await Repository.findOne({ _id: repo_Id })
             .populate('owner')
             .populate('issues');
 
@@ -95,10 +95,11 @@ const fetchRepositoryByID = async (req, res) => {
 };
 
 const fetchRepositoryByName = async (req, res) => {
-    const { repo_Name } = req.params.name;
-
+    const repo_Name  = req.params.name;
+    console.log("repo_Name: ", repo_Name);
+    
     try {
-        const repository = await Repository.find({ name: repo_Name })
+        const repository = await Repository.findOne({ name: repo_Name })
             .populate('owner')
             .populate('issues');
 
