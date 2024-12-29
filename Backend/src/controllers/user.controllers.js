@@ -56,6 +56,7 @@ const signupUser = async (req, res) => {
 
         return res.status(201).json({
             user: createdUser,
+            userId: createdUser._id,
             token: token,
             message: 'User created successfully!!',
         });
@@ -111,6 +112,7 @@ const loginUser = async (req, res) => {
 
         return res.status(200).cookie('token', token, options).json({
             user: loggedInUser,
+            userId: loggedInUser._id,
             token: token,
             message: 'User logged In Successfully',
         });

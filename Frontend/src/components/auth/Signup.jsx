@@ -21,7 +21,8 @@ const Signup = () => {
                     username: username,
                     email: email,
                     password: password,
-                }
+                },
+                { headers: { "Content-Type": "application/json" } }
             );
 
             localStorage.setItem("token", res.data.token);

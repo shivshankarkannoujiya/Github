@@ -32,6 +32,7 @@ const createRepository = async (req, res) => {
         // TODO: update the User and Issue
         return res.status(201).json({
             createdRepo: newRepository,
+            repositoryId: newRepository._id,
             message: 'Repository created successfully',
         });
     } catch (error) {
@@ -68,10 +69,10 @@ const getAllRepository = async (_, res) => {
 };
 
 const fetchRepositoryByID = async (req, res) => {
-    const repo_Id = req.params.id;
+    const repoId = req.params.id;
 
     try {
-        const repository = await Repository.findOne({ _id: repo_Id })
+        const repository = await Repository.findOne({ _id: repoId })
             .populate('owner')
             .populate('issues');
 
@@ -166,6 +167,7 @@ const updateRepositoryByID = async (req, res) => {
 
         return res.status(200).json({
             repository: updatedRepository,
+            repositoryId: updatedRepository._id,
             message: 'repository updated successfully',
         });
     } catch (error) {

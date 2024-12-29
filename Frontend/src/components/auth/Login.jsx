@@ -1,22 +1,21 @@
 // import React from "react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../authContext.jsx";
 import axios from "axios";
 
 const Login = () => {
-    const { setCurrentUser } = useAuth();
-    useEffect(() => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        setCurrentUser(null);
-    });
+    // useEffect(() => {
+    //     localStorage.removeItem("token");
+    //     localStorage.removeItem("userId");
+    //     setCurrentUser(null);
+    // });
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    // const [currentUser, setCurrentUser] = useAuth()
+    const { setCurrentUser } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -82,6 +81,7 @@ const Login = () => {
                     <input
                         id="password"
                         type="password"
+                        autoComplete="current-password"
                         className="w-full border bg-gray-900 border-gray-300 rounded-md p-2 outline-none mb-5"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -97,7 +97,7 @@ const Login = () => {
                         onClick={handleLogin}
                         disabled={loading}
                     >
-                        Sign in
+                        {loading ? "Loading..." : "Login"}
                     </button>
                 </form>
 
