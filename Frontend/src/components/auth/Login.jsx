@@ -1,11 +1,12 @@
 // import React from "react";
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../authContext.jsx";
 import axios from "axios";
 
 const Login = () => {
-    const { currentUser, setCurrentUser } = useAuth();
+    const { setCurrentUser } = useAuth();
     useEffect(() => {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -68,8 +69,7 @@ const Login = () => {
                     <input
                         id="username"
                         type="text"
-                        className="w-full px-3 py-2 bg-githubBg text-white rounded focus:outline-none focus:ring focus:ring-blue-500 mb-4"
-                        placeholder="Enter your username"
+                        className="w-full border bg-gray-900 border-gray-300 rounded-md p-2 outline-none mb-5"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -82,19 +82,18 @@ const Login = () => {
                     <input
                         id="password"
                         type="password"
-                        className="w-full px-3 py-2 bg-githubBg text-white rounded focus:outline-none focus:ring focus:ring-blue-500 mb-2"
-                        placeholder="Enter your password"
+                        className="w-full border bg-gray-900 border-gray-300 rounded-md p-2 outline-none mb-5"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <div className="flex justify-between text-sm mb-4">
+                    <div className="flex justify-between text-sm mb-4 outline-none">
                         <a href="#" className="text-blue-500 hover:underline">
                             Forgot password?
                         </a>
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded focus:outline-none focus:ring focus:ring-green-500"
+                        className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded focus:outline-none focus:ring focus:ring-green-500 outline-none"
                         onClick={handleLogin}
                         disabled={loading}
                     >
@@ -102,16 +101,16 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div className="text-sm text-center border-t border-gray-700 pt-6 mt-10">
+                {/* <div className="text-sm text-center border-t border-gray-700 pt-6 mt-10">
                     <a href="#" className="text-blue-500 hover:underline">
                         Sign in with a passkey
-                    </a>
-                </div>
-                <div className="mt-4 text-sm text-center">
-                    New to GitHub?{" "}
-                    <a href="#" className="text-blue-500 hover:underline">
+                    </a> */}
+                {/* </div> */}
+                <div className="mt-4 text-sm text-center border-t border-gray-700 pt-6">
+                    <span className="mr-2">New to GitHub?</span>
+                    <Link to="/signup" className="text-blue-600">
                         Create an account
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

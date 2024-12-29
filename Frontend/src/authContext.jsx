@@ -1,4 +1,6 @@
-import React, { createContext, useEffect, useState, useContext } from "react";
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
+import  { createContext, useEffect, useState, useContext } from "react";
 
 const AuthContext = createContext();
 
